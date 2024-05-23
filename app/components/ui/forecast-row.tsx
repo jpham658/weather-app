@@ -1,16 +1,16 @@
-import { WeatherData } from "@/app/types/weather-types";
+import { ForecastData } from "@/app/types/weather-types";
 import ForecastCard from "./forecast-card";
 
 interface ForecastRowProps {
-    weatherList: WeatherData[];
+    weatherList: ForecastData[];
 }
 
 const ForecastRow: React.FC<ForecastRowProps> = ({
     weatherList
 }) => {
     return (
-        <div className="flex">
-            {weatherList.map((data: WeatherData) => (
+        <div className="flex rounded-lg shadow-lg">
+            {weatherList.map((data: ForecastData) => (
                 <ForecastCard
                     temp={data.main.temp}
                     weatherIcon={data.weather[0].icon}

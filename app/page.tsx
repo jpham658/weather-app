@@ -1,7 +1,8 @@
 import CurrentWeatherCard from "./components/ui/current-weather-card";
+import StatisticsRow from "./components/ui/statistics-row";
 import ForecastRow from "./components/ui/forecast-row";
-import { WeatherData } from "./types/weather-types";
-import { extractDate, filterObjectsByTodayDate } from "./utils/dateUtils";
+import { ForecastData } from "./types/weather-types";
+import { filterObjectsByTodayDate } from "./utils/dateUtils";
 
 
 async function getCurrentWeatherData() {
@@ -18,7 +19,7 @@ async function getForecastData() {
   return data;
 }
 
-function filterDailyForecastData(forecastData: WeatherData[]) {
+function filterDailyForecastData(forecastData: ForecastData[]) {
   if(!forecastData) {
     return []
   }
@@ -31,13 +32,9 @@ export default async function Home() {
   const dailyForecastData = await filterDailyForecastData(forecastData.list);
 
   return (
-    <main className="flex min-h-screen flex-col justify-center py-10 px-5">
-      
-      <div className="flex flex-col mb-10 bg-red-100">
-        <p className="text-3xl font-medium">This is a weather app.</p>
-      </div>
+    <main className="flex min-h-screen flex-col py-10 px-5">
 
-      <div className="flex justify-around items-center h-96 bg-blue-200">
+      <div className="flex flex-col items-center gap-4 h-96">
 
         <CurrentWeatherCard
           temp={currentData.main.temp}
@@ -47,15 +44,23 @@ export default async function Home() {
           weatherDescription={currentData.weather[0].description}
         />
 
-        {dailyForecastData &&
-        <ForecastRow 
-          weatherList={dailyForecastData}
-        />}
+        <div className="flex flex-col gap-4 w-full">
+          <div className="overflow-x-auto">
+            {dailyForecastData &&
+            <ForecastRow
+              weatherList={dailyForecastData}
+            />}
+          </div>
+
+          <div>
+            <StatisticsRow 
+             data={currentData}
+            />  
+          </div>
+        </div>
         
       </div>
 
-      <p>{extractDate("2024-05-21 15:00:00")}</p>
-      
     </main>
   );
 }

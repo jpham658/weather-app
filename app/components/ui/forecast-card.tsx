@@ -1,4 +1,4 @@
-import { timeStamp } from "console";
+import { formatTimeFromDateString } from "@/app/utils/dateUtils";
 import WeatherIcon from "../widgets/weather-icon";
 
 interface ForecastCardProps {
@@ -17,15 +17,15 @@ const ForecastCard: React.FC<ForecastCardProps> = ({
     timestamp
 }) => {
     return (
-        <div className="flex flex-col justify-center items-center bg-white p-3 w-48 border">
+        <div className="flex flex-col justify-center items-center bg-white p-3 w-48 h-64 border">
             <WeatherIcon 
                 weatherName={weatherName}
                 iconCode={weatherIcon}
                 size={100}
             />
-            <p>{temp}</p>
-            {pop && <p>Probability of rain: {pop * 100}%</p>}
-            <p>{timestamp}</p>
+            <p>{temp}°C</p>
+            <p>Probability of rain: {pop * 100}%</p>
+            <p>{formatTimeFromDateString(timestamp)}</p>
         </div>
     );
 }

@@ -2,7 +2,8 @@
  * Utils related to dates
  */
 
-import { time } from "console";
+import moment from "moment";
+
 
 /**
  * Extracts the date part from a date-time string.
@@ -42,3 +43,23 @@ export function filterObjectsByTodayDate<T extends Record<string, any>>(
       return date === today;
     });
   }
+
+/**
+ * Convert Unix timestamp to a Date object.
+ * @param unixTimestamp The given Unix timestamp
+ * @returns the converted Date object
+ */
+export function convertUnixToDate(unixTimestamp: number) : Date {
+  const date = new Date(unixTimestamp * 1e3);
+  return date;
+}
+
+/**
+ * Format a given date string to a human-readable time
+ * @param dateString The given date string
+ * @return A human readable time
+ */
+export function formatTimeFromDateString(dateString: string) : string {
+  if (!dateString) return "";
+  return moment(dateString).format("h:mm a");
+}
