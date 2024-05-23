@@ -61,5 +61,5 @@ export function convertUnixToDate(unixTimestamp: number) : Date {
  */
 export function formatTimeFromDateString(dateString: string) : string {
   if (!dateString) return "";
-  return moment(dateString).format("h:mm a");
+  return moment(dateString, "h:mm a").format("h:mm a");
 }

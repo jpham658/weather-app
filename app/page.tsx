@@ -3,6 +3,7 @@ import StatisticsRow from "./components/ui/statistics-row";
 import ForecastRow from "./components/ui/forecast-row";
 import { ForecastData } from "./types/weather-types";
 import { filterObjectsByTodayDate } from "./utils/dateUtils";
+import Search from "./components/widgets/search-bar";
 
 
 async function getCurrentWeatherData() {
@@ -26,7 +27,17 @@ function filterDailyForecastData(forecastData: ForecastData[]) {
   return filterObjectsByTodayDate(forecastData, "dt_txt");
 }
 
-export default async function Home() {
+export default async function Home({
+  searchParams
+}: {
+  searchParams?: {
+    city?: number;
+    country?: number;
+  }
+}) {
+  const city = searchParams?.city || "";
+  const country = searchParams?.country || "";
+
   const currentData = await getCurrentWeatherData();
   const forecastData = await getForecastData();
   const dailyForecastData = await filterDailyForecastData(forecastData.list);
@@ -35,6 +46,9 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col py-10 px-5">
 
       <div className="flex flex-col items-center gap-4 h-96">
+        <Search 
+          placeholder="See what weather is like somewhere else!"
+        /> 
 
         <CurrentWeatherCard
           temp={currentData.main.temp}
