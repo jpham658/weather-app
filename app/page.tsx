@@ -5,16 +5,28 @@ import { ForecastData } from "./types/weather-types";
 import { filterObjectsByTodayDate } from "./utils/dateUtils";
 import Search from "./components/widgets/search-bar";
 
+async function getLocationData(city: string, country: string) {
+  const url = `${process.env.LOCAL_URL}/api/geolocation/location-coords?city=${city}&country=${country}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data[0];
+}
 
-async function getCurrentWeatherData() {
-  const url = `${process.env.LOCAL_URL}/api/weather/current-weather`;
+async function getCurrentWeatherData(city: string, country: string) {
+  const locationData = await getLocationData(city, country);
+  const lat = locationData.lat;
+  const lon = locationData.lon;
+  const url = `${process.env.LOCAL_URL}/api/weather/current-weather?lat=${lat}&lon=${lon}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
 }
 
-async function getForecastData() {
-  const url = `${process.env.LOCAL_URL}/api/weather/weather-forecast`;
+async function getForecastData(city: string, country: string) {
+  const locationData = await getLocationData(city, country);
+  const lat = locationData.lat;
+  const lon = locationData.lon;
+  const url = `${process.env.LOCAL_URL}/api/weather/weather-forecast?lat=${lat}&lon=${lon}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
@@ -31,25 +43,24 @@ export default async function Home({
   searchParams
 }: {
   searchParams?: {
-    city?: number;
-    country?: number;
+    city?: string;
+    country?: string;
   }
 }) {
   const city = searchParams?.city || "";
   const country = searchParams?.country || "";
 
-  const currentData = await getCurrentWeatherData();
-  const forecastData = await getForecastData();
+  const currentData = await getCurrentWeatherData(city, country);
+  const forecastData = await getForecastData(city, country);
   const dailyForecastData = await filterDailyForecastData(forecastData.list);
 
   return (
     <main className="flex min-h-screen flex-col py-10 px-5">
 
-      <div className="flex flex-col items-center gap-4 h-96">
+      <div className="flex flex-col gap-4 h-96">
         <Search 
           placeholder="See what weather is like somewhere else!"
         /> 
-
         <CurrentWeatherCard
           temp={currentData.main.temp}
           feelsLike={currentData.main.feels_like}
