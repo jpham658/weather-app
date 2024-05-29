@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
   
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) {
         const errorData = await res.json();
         return new NextResponse(JSON.stringify({ error: errorData }), {

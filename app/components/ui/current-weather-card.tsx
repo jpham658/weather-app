@@ -26,8 +26,8 @@ const CurrentWeatherCard: React.FC<WeatherCardProps> = ({
             
             <div className="flex flex-col justify-center">
                 <h2 className="font-semibold text-3xl">{weatherName}</h2>
-                <p className="text-xl">{temp}°C</p>
-                <p>feels like {feelsLike}°C</p>
+                <p className="text-xl">{Math.round(temp)}°C</p>
+                <p>feels like {Math.round(feelsLike)}°C</p>
                 <p>{weatherDescription}</p>
             </div>
 

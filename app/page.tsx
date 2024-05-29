@@ -2,8 +2,8 @@ import CurrentWeatherCard from "./components/ui/current-weather-card";
 import StatisticsRow from "./components/ui/statistics-row";
 import ForecastRow from "./components/ui/forecast-row";
 import { ForecastData } from "./types/weather-types";
-import { filterObjectsByTodayDate } from "./utils/dateUtils";
 import Search from "./components/widgets/search-bar";
+import { filterObjectsByCurrentTime } from "./utils/dateTimeUtils";
 
 async function getLocationData(city: string, country?: string) {
   const url = `${process.env.LOCAL_URL}/api/geolocation/location-coords?city=${city}&country=${country}`;
@@ -13,24 +13,21 @@ async function getLocationData(city: string, country?: string) {
 }
 
 async function getCurrentWeatherData(lat: number, lon: number) {
-  const url = `${process.env.LOCAL_URL}/api/weather/current-weather?lat=${lat}&lon=${lon}`;
+  const url = `${process.env.LOCAL_URL}/api/weather/current?lat=${lat}&lon=${lon}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
 }
 
 async function getForecastData(lat: number, lon: number) {
-  const url = `${process.env.LOCAL_URL}/api/weather/weather-forecast?lat=${lat}&lon=${lon}`;
+  const url = `${process.env.LOCAL_URL}/api/weather/forecast?lat=${lat}&lon=${lon}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
 }
 
-function filterDailyForecastData(forecastData: ForecastData[]) {
-  if(!forecastData) {
-    return []
-  }
-  return filterObjectsByTodayDate(forecastData, "dt_txt");
+function filterCurrentForecastData(forecastData: ForecastData[]) {
+  return filterObjectsByCurrentTime(forecastData, "dt_txt");
 }
 
 export default async function Home({
@@ -42,7 +39,7 @@ export default async function Home({
   }
 }) {
   const city = searchParams?.city || "London";
-  const country = searchParams?.country || "";
+  const country = searchParams?.country || "England";
   let locationData = await getLocationData(city, country);
   let lat, lon: number;
 
@@ -53,13 +50,13 @@ export default async function Home({
   lat = locationData.lat;
   lon = locationData.lon;
 
-  let dailyForecastData: ForecastData[] = [];
-
   const currentData = await getCurrentWeatherData(lat, lon);
   const forecastData = await getForecastData(lat, lon);
-  
+
+  let currentForecastData: ForecastData[] = forecastData.list;
+
   if(forecastData) {
-    dailyForecastData = await filterDailyForecastData(forecastData.list);
+    currentForecastData = filterCurrentForecastData(forecastData.list);
   }
 
   return (
@@ -69,7 +66,7 @@ export default async function Home({
         <Search 
           placeholder="See what weather is like somewhere else!"
         /> 
-
+        
         {currentData && <CurrentWeatherCard
           temp={currentData.main.temp}
           feelsLike={currentData.main.feels_like}
@@ -80,9 +77,9 @@ export default async function Home({
 
         <div className="flex flex-col gap-4 w-full">
           <div className="overflow-x-auto">
-            {dailyForecastData &&
+            {currentForecastData &&
             <ForecastRow
-              weatherList={dailyForecastData}
+              weatherList={currentForecastData}
             />}
           </div>
 
