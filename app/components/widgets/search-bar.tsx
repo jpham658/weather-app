@@ -43,9 +43,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
     return (
         <div className="relative flex flex-1 flex-shrink-0">
-        <form className="w-full" onSubmit={handleSubmit}>
+        <form className="w-full flex gap-3" onSubmit={handleSubmit}>
             <input
-                className="peer block w-full rounded-md border border-gray-200 py-3 pl-3 outline-2 placeholder:text-gray-500 focus:outline-blue-200"
+                className="peer block w-full rounded border border-gray-200 py-3 pl-3 text-lg outline-2 placeholder:text-gray-500 focus:outline-blue-200"
                 placeholder={placeholder}
                 value={location}
                 onChange={handleChange}
@@ -53,7 +53,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
                     if (e.key === "Enter") handleSubmit();
                 }}
             />
-            <button type="submit">Submit</button>
+            <button type="submit" className="bg-slate-200 px-3 text-lg rounded hover:bg-blue-100">Submit</button>
         </form>
         </div>
     );
