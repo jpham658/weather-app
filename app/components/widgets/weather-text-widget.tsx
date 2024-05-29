@@ -1,5 +1,5 @@
 import { CurrentWeatherData, ForecastData } from "@/app/types/weather-types";
-import { getRelativeTime } from "@/app/utils/date-time-utils";
+import { convertTimeFromUnix, getRelativeTime } from "@/app/utils/date-time-utils";
 import { getWeatherConditionText, weatherConditionText } from "@/app/utils/weather-utils";
 
 interface WeatherTextWidgetProps {
