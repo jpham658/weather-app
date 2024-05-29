@@ -28,6 +28,14 @@ export async function GET(req: NextRequest) {
             });
           }
           const data = await res.json();
+          if(Array.isArray(data) && data.length === 0) {
+            return new NextResponse("City not found...", {
+              status: 404,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+          }
           return new NextResponse(JSON.stringify(data), {
             status: 200,
             headers: {
