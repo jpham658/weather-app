@@ -1,6 +1,6 @@
-import { formatTimeFromDateString } from "@/app/utils/dateTimeUtils";
+import { formatTimeFromDateString } from "@/app/utils/date-time-utils";
 import WeatherIcon from "../widgets/weather-icon";
-import { getShortDayName } from "@/app/utils/dateUtils";
+import { getShortDayName } from "@/app/utils/date-utils";
 
 interface ForecastCardProps {
     temp: number;

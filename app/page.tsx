@@ -3,7 +3,8 @@ import StatisticsRow from "./components/ui/statistics-row";
 import ForecastRow from "./components/ui/forecast-row";
 import { ForecastData } from "./types/weather-types";
 import Search from "./components/widgets/search-bar";
-import { filterObjectsByCurrentTime } from "./utils/dateTimeUtils";
+import { filterObjectsByCurrentTime } from "./utils/date-time-utils";
+import WeatherTextWidget from "./components/widgets/weather-text-widget";
 
 async function getLocationData(city: string, country?: string) {
   const url = `${process.env.LOCAL_URL}/api/geolocation/location-coords?city=${city}&country=${country}`;
@@ -67,6 +68,10 @@ export default async function Home({
           placeholder="See what weather is like somewhere else!"
         /> 
         
+        {currentData && <WeatherTextWidget 
+          weatherData={currentData}
+        />}
+
         {currentData && <CurrentWeatherCard
           temp={currentData.main.temp}
           feelsLike={currentData.main.feels_like}

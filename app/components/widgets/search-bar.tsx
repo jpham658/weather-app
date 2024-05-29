@@ -45,7 +45,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
         <div className="relative flex flex-1 flex-shrink-0">
         <form className="w-full flex gap-3" onSubmit={handleSubmit}>
             <input
-                className="peer block w-full rounded border border-gray-200 py-3 pl-3 text-lg outline-2 placeholder:text-gray-500 focus:outline-blue-200"
+                className="peer block w-full rounded bg-slate-50 border border-gray-200 py-3 pl-3 text-lg outline-2 placeholder:text-gray-500 focus:outline-blue-200"
                 placeholder={placeholder}
                 value={location}
                 onChange={handleChange}

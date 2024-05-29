@@ -1,4 +1,4 @@
-import { convertTimeFromUnix } from "@/app/utils/dateTimeUtils";
+import { convertTimeFromUnix } from "@/app/utils/date-time-utils";
 import React from "react";
 
 interface SunriseSunsetCardProps {

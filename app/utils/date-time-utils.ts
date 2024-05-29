@@ -47,25 +47,35 @@ export function filterObjectsByCurrentTime<T extends Record<string, any>>(
   }
 
 /**
+ * Get relative time from a Unix timestamp
+ * @param timestamp Unix timestamp
+ * @returns relative time of the timestamp
+ */
+export function getRelativeTime(timestamp: number) {
+  const time = moment.unix(timestamp);
+  return time.calendar(null, {
+    sameDay: '[Today]', // The same day (Today)
+    nextDay: '[Tomorrow]', // The next day (Tomorrow)
+    nextWeek: 'dddd', // Within a week (e.g., Monday)
+    lastDay: '[Yesterday]', // The previous day (Yesterday)
+    lastWeek: '[Last] dddd', // Within the last week (Last Monday)
+    sameElse: 'MMMM Do, YYYY' // Everything else (e.g., July 25, 2023)
+  });
+}
+
+/**
  * Convert Unix timestamp to a time string.
  * @param unixTimestamp The given Unix timestamp
  * @returns the converted time string
  */
-export function convertTimeFromUnix(unixTimestamp: number) : string {
-  const inputTime = moment.unix(unixTimestamp);
-  const currentTime = moment();
-
-  if (inputTime.isSame(currentTime, 'day')) {
-    return inputTime.format('h:mm A');
-  } else {
-    return inputTime.calendar(null, {
-      nextDay: '[Tomorrow at] h:mm A',
-      nextWeek: 'dddd [at] h:mm A',
-      lastDay: '[Yesterday at] h:mm A',
-      lastWeek: '[Last] dddd [at] h:mm A',
-      sameElse: 'MMMM Do [at] h:mm A'
-    });
+export function convertTimeFromUnix(timestamp: number) : string {
+  const relativeTime = getRelativeTime(timestamp);
+  let timeString: string = "";
+  if(relativeTime != "Today") {
+    timeString += relativeTime + " at "
   }
+  timeString += moment.unix(timestamp).format("H:mm");
+  return timeString;
 }
 
 /**
