@@ -20,10 +20,10 @@ export function getWeatherConditionText(condition: string) : string {
     }
     
     const weatherConditionText: Record<string, string> = {
-        "Thunderstorm": "it's going to be stormy - don't forget an umbrella!",
+        "Thunderstorm": "it's going to be stormy.",
         "Drizzle": "there's going to be a bit of drizzle.",
-        "Rain": "it's going to rain so bring a raincoat!",
-        "Snow": "there's going to be snow, go out and make a snowman!",
+        "Rain": "it's going to rain.",
+        "Snow": "there's going to be snow.",
         "Mist": atmosphereText("misty"),
         "Smoke": atmosphereText("smoky"),
         "Haze": atmosphereText("hazy"),
@@ -76,14 +76,24 @@ export function getWeatherType(iconText: WeatherIconType) : string {
  * @param isDay True if the weather is in the day, false otherwise
  * @returns the associated colour for the weather type
  */
-export function getWeatherTypeBackground(weather: string , isDay: boolean) {
+export function getWeatherTypeBackground(weather: WeatherIconType) {
+    const day = isDay(weather);
     const colours: Record<string, string> = {
-        "clear": isDay ? "bg-gradient-to-b from-sky-200 to-cyan-100" : "bg-gradient-to-b from-indigo-500 to-blue-200",
-        "sunny-intervals": isDay ? "bg-gradient-to-b from-slate-300 to-sky-100" : "bg-gradient-to-b from-slate-500 to-indigo-200",
-        "clouds": isDay ? "bg-gradient-to-b from-slate-300 to-sky-50" : "bg-gradient-to-b from-slate-500 to-indigo-300",
-        "rain": isDay ? "bg-gradient-to-b from-slate-400 to-slate-200" : "bg-gradient-to-b from-slate-600 to-slate-400",
-        "thunderstorm": isDay ? "bg-gradient-to-b from-slate-600 to-blue-100" : "bg-gradient-to-b from-slate-600 to-indigo-900",
+        "clear": day ? "bg-gradient-to-b from-sky-200 to-cyan-100" : "bg-gradient-to-b from-indigo-500 to-blue-200",
+        "sunny-intervals": day ? "bg-gradient-to-b from-slate-300 to-sky-100" : "bg-gradient-to-b from-slate-500 to-indigo-200",
+        "clouds": day ? "bg-gradient-to-b from-slate-300 to-sky-50" : "bg-gradient-to-b from-slate-500 to-indigo-300",
+        "rain": day ? "bg-gradient-to-b from-slate-400 to-slate-200" : "bg-gradient-to-b from-slate-600 to-slate-400",
+        "thunderstorm": day ? "bg-gradient-to-b from-slate-600 to-blue-100" : "bg-gradient-to-b from-slate-600 to-indigo-900",
     }
 
-    return colours[weather] || colours["clouds"];
+    return colours[getWeatherType(weather)] || colours["clouds"];
+}
+
+/**
+ * Get Tailwind text colour for a given weather type
+ * @param weather The weather type given
+ * @returns the associated text colour for the weather at a given time of day
+ */
+export function getWeatherTypeTextColour(weather: WeatherIconType) {
+    return isDay(weather) ? "text-black" : "text-white";
 }

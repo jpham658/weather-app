@@ -9,7 +9,7 @@ const ForecastRow: React.FC<ForecastRowProps> = ({
     weatherList
 }) => {
     return (
-        <div className="flex rounded-lg shadow-lg">
+        <div className="flex rounded-lg gap-2 scrollbar-hide">
             {weatherList.map((data: ForecastData) => (
                 <ForecastCard
                     temp={data.main.temp}

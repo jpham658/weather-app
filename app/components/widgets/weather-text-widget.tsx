@@ -1,20 +1,21 @@
 import { CurrentWeatherData, ForecastData } from "@/app/types/weather-types";
-import { getRelativeTime } from "@/app/utils/date-time-utils";
 import { getWeatherConditionText } from "@/app/utils/weather-utils";
 
 interface WeatherTextWidgetProps {
     weatherData: CurrentWeatherData | ForecastData;
+    isDay: boolean;
 }
 
 const WeatherTextWidget: React.FC<WeatherTextWidgetProps> = ({
-    weatherData
+    weatherData,
+    isDay
 }) => {
-    const relativeTime = getRelativeTime(weatherData.dt);
+    const relativeTime = isDay ? "Today" : "Tonight";
     const weatherCondition = weatherData.weather[0].main;
     const weatherText = getWeatherConditionText(weatherCondition);
     return (
-        <div className="text-4xl md:text-5xl">
-            <span className="font-semibold text-5xl md:text-6xl">{relativeTime}</span>, <br/> {weatherText}
+        <div className={`text-4xl lg:text-6xl`}>
+            <span className="font-semibold text-5xl lg:text-7xl">{relativeTime}</span>, <br/> {weatherText}
         </div>
     );
 }

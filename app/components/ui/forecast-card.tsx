@@ -18,7 +18,7 @@ const ForecastCard: React.FC<ForecastCardProps> = ({
     timestamp
 }) => {
     return (
-        <div className="flex flex-col justify-center items-center gap-3 text-center px-20 py-10 bg-white border">
+        <div className="flex flex-col justify-center items-center gap-3 text-center px-20 py-10 border border-sm rounded h-full bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30">
             <p>{getShortDayName(timestamp)}</p>
             <p>{formatTimeFromDateString(timestamp)}</p>
             <WeatherIcon

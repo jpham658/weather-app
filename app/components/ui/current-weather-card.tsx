@@ -17,7 +17,7 @@ const CurrentWeatherCard: React.FC<WeatherCardProps> = ({
     weatherDescription,
     }) => {
     return (
-        <div className="flex items-center w-full p-5 gap-7 bg-white shadow-xl border border-sm rounded">
+        <div className="flex items-center w-full p-5 gap-7 border border-sm rounded h-full bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30">
             <WeatherIcon
                 weatherName={weatherName}
                 iconCode={weatherIcon}
@@ -26,8 +26,7 @@ const CurrentWeatherCard: React.FC<WeatherCardProps> = ({
             
             <div className="flex flex-col justify-center">
                 <h2 className="font-semibold text-3xl">{weatherName}</h2>
-                <p className="text-xl">{Math.round(temp)}°C</p>
-                <p>feels like {Math.round(feelsLike)}°C</p>
+                <p className="text-xl">{Math.round(temp)}°C, feels like {Math.round(feelsLike)}°C</p>
                 <p>{weatherDescription}</p>
             </div>
 

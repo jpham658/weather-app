@@ -5,10 +5,17 @@ import { CurrentWeatherData, ForecastData, WeatherIconType } from "./types/weath
 import Search from "./components/widgets/search-bar";
 import { filterObjectsByCurrentTime } from "./utils/date-time-utils";
 import WeatherTextWidget from "./components/widgets/weather-text-widget";
-import { getWeatherType, getWeatherTypeBackground, isDay } from "./utils/weather-utils";
+import { getWeatherType, getWeatherTypeBackground, getWeatherTypeTextColour, isDay } from "./utils/weather-utils";
 
 async function getLocationData(city: string, country?: string) {
   const url = `${process.env.LOCAL_URL}/api/geolocation/location-coords?city=${city}&country=${country}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data[0];
+}
+
+async function getLocationName(lat: number, lon: number) {
+  const url = `${process.env.LOCAL_URL}/api/geolocation/location-name?lat=${lat}&lon=${lon}`;
   const res = await fetch(url);
   const data = await res.json();
   return data[0];
@@ -32,13 +39,6 @@ function filterCurrentForecastData(forecastData: ForecastData[]) {
   return filterObjectsByCurrentTime(forecastData, "dt_txt");
 }
 
-function getBackgroundColour(weatherData: CurrentWeatherData) {
-  const iconText: WeatherIconType = weatherData.weather[0].icon;
-  const weatherType = getWeatherType(iconText);
-  const day = isDay(iconText);
-  return getWeatherTypeBackground(weatherType, day);
-}
-
 export default async function Home({
   searchParams
 }: {
@@ -47,8 +47,8 @@ export default async function Home({
     country?: string;
   }
 }) {
-  const city = searchParams?.city || "London";
-  const country = searchParams?.country || "England";
+  let city = searchParams?.city || "London";
+  let country = searchParams?.country || "England";
 
   let locationData = await getLocationData(city, country);
   let lat, lon: number;
@@ -60,9 +60,16 @@ export default async function Home({
   lat = locationData.lat;
   lon = locationData.lon;
 
+  const locationName = await getLocationName(lat, lon);
+
+  city = locationName.name; 
+  country = locationName.country;
+
   const currentData = await getCurrentWeatherData(lat, lon);
   const forecastData = await getForecastData(lat, lon);
-  const backgroundColour = getBackgroundColour(currentData);
+  const icon: WeatherIconType = currentData.weather[0].icon;
+  const backgroundColour = getWeatherTypeBackground(icon);
+  const textColour = getWeatherTypeTextColour(icon);
 
   let currentForecastData: ForecastData[] = forecastData.list;
 
@@ -71,24 +78,31 @@ export default async function Home({
   }
 
   return (
-    <main className={`flex min-h-screen flex-col py-10 px-5 ${backgroundColour}`}>
+    <main className={`flex min-h-screen flex-col py-10 px-5 ${`${backgroundColour} ${textColour}`}`}>
 
       <div className="flex flex-col gap-4">
         <Search 
           placeholder="See what weather is like somewhere else!"
         /> 
         
-        {currentData && <WeatherTextWidget 
-          weatherData={currentData}
-        />}
-
-        {currentData && <CurrentWeatherCard
-          temp={currentData.main.temp}
-          feelsLike={currentData.main.feels_like}
-          weatherIcon={currentData.weather[0].icon}
-          weatherName={currentData.weather[0].main}
-          weatherDescription={currentData.weather[0].description}
-        />}
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
+            <p className={`text-xl`}>{city}, {country}</p>
+            {currentData && <WeatherTextWidget
+              weatherData={currentData}
+              isDay={true}
+            />}
+          </div>
+          <div className="flex-shrink-1">
+            {currentData && <CurrentWeatherCard
+              temp={currentData.main.temp}
+              feelsLike={currentData.main.feels_like}
+              weatherIcon={currentData.weather[0].icon}
+              weatherName={currentData.weather[0].main}
+              weatherDescription={currentData.weather[0].description}
+            />}
+          </div>
+        </div>
 
         <div className="flex flex-col gap-4 w-full">
           <div className="overflow-x-auto">

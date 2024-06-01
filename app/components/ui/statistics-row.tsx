@@ -11,7 +11,7 @@ const StatisticsRow: React.FC<StatisticsRowProps> = ({
     data
 }) => {
     return (
-        <div className="flex justify-center gap-5">
+        <div className="flex justify-center gap-5 ">
             <SunriseSunsetCard 
                 sunriseTime={data.sys.sunrise}
                 sunsetTime={data.sys.sunset}
