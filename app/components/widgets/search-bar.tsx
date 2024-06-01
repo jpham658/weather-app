@@ -4,7 +4,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
  
 
-export default function Search({ placeholder }: { placeholder: string }) {
+export default function Search({ placeholder, isDay }: { 
+    placeholder: string;
+    isDay: boolean;
+  }) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -45,7 +48,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
         <div className="relative flex flex-1 flex-shrink-0 ">
         <form className="w-full flex gap-3" onSubmit={handleSubmit}>
             <input
-                className="peer block w-full rounded bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-3 pl-3 text-lg outline-2 placeholder:text-slate-50 focus:outline-blue-200/[.50]"
+                className={`peer block w-full rounded bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-3 pl-3 text-lg outline-2 placeholder:text-blue-900 focus:outline-blue-200/[.50]`}
                 placeholder={placeholder}
                 value={location}
                 onChange={handleChange}
@@ -53,7 +56,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
                     if (e.key === "Enter") handleSubmit();
                 }}
             />
-            <button type="submit" className="bg-slate-200 px-3 text-lg rounded hover:bg-blue-100">Submit</button>
+            <button type="submit" className="bg-slate-200 px-3 text-blue-900 text-lg rounded hover:bg-blue-100">Submit</button>
         </form>
         </div>
     );

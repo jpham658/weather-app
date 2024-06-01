@@ -68,6 +68,7 @@ export default async function Home({
   const currentData = await getCurrentWeatherData(lat, lon);
   const forecastData = await getForecastData(lat, lon);
   const icon: WeatherIconType = currentData.weather[0].icon;
+  const day = isDay(icon);
   const backgroundColour = getWeatherTypeBackground(icon);
   const textColour = getWeatherTypeTextColour(icon);
 
@@ -83,6 +84,7 @@ export default async function Home({
       <div className="flex flex-col gap-4">
         <Search 
           placeholder="See what weather is like somewhere else!"
+          isDay={day}
         /> 
         
         <div className="flex justify-between items-center">
@@ -90,7 +92,7 @@ export default async function Home({
             <p className={`text-xl`}>{city}, {country}</p>
             {currentData && <WeatherTextWidget
               weatherData={currentData}
-              isDay={true}
+              isDay={day}
             />}
           </div>
           <div className="flex-shrink-1">

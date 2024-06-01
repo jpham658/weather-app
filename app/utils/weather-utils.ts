@@ -95,5 +95,5 @@ export function getWeatherTypeBackground(weather: WeatherIconType) {
  * @returns the associated text colour for the weather at a given time of day
  */
 export function getWeatherTypeTextColour(weather: WeatherIconType) {
-    return isDay(weather) ? "text-black" : "text-white";
+    return isDay(weather) ? "text-blue-900" : "text-white";
 }
