@@ -1,10 +1,11 @@
 import CurrentWeatherCard from "./components/ui/current-weather-card";
 import StatisticsRow from "./components/ui/statistics-row";
 import ForecastRow from "./components/ui/forecast-row";
-import { ForecastData } from "./types/weather-types";
+import { CurrentWeatherData, ForecastData, WeatherIconType } from "./types/weather-types";
 import Search from "./components/widgets/search-bar";
 import { filterObjectsByCurrentTime } from "./utils/date-time-utils";
 import WeatherTextWidget from "./components/widgets/weather-text-widget";
+import { getWeatherType, getWeatherTypeBackground, isDay } from "./utils/weather-utils";
 
 async function getLocationData(city: string, country?: string) {
   const url = `${process.env.LOCAL_URL}/api/geolocation/location-coords?city=${city}&country=${country}`;
@@ -31,6 +32,13 @@ function filterCurrentForecastData(forecastData: ForecastData[]) {
   return filterObjectsByCurrentTime(forecastData, "dt_txt");
 }
 
+function getBackgroundColour(weatherData: CurrentWeatherData) {
+  const iconText: WeatherIconType = weatherData.weather[0].icon;
+  const weatherType = getWeatherType(iconText);
+  const day = isDay(iconText);
+  return getWeatherTypeBackground(weatherType, day);
+}
+
 export default async function Home({
   searchParams
 }: {
@@ -41,6 +49,7 @@ export default async function Home({
 }) {
   const city = searchParams?.city || "London";
   const country = searchParams?.country || "England";
+
   let locationData = await getLocationData(city, country);
   let lat, lon: number;
 
@@ -53,6 +62,7 @@ export default async function Home({
 
   const currentData = await getCurrentWeatherData(lat, lon);
   const forecastData = await getForecastData(lat, lon);
+  const backgroundColour = getBackgroundColour(currentData);
 
   let currentForecastData: ForecastData[] = forecastData.list;
 
@@ -61,9 +71,9 @@ export default async function Home({
   }
 
   return (
-    <main className="flex min-h-screen flex-col py-10 px-5">
+    <main className={`flex min-h-screen flex-col py-10 px-5 ${backgroundColour}`}>
 
-      <div className="flex flex-col gap-4 h-96">
+      <div className="flex flex-col gap-4">
         <Search 
           placeholder="See what weather is like somewhere else!"
         /> 
