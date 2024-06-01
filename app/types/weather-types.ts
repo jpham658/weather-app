@@ -1,4 +1,9 @@
 /**
+ * Type for weather icon.
+ */
+export type WeatherIconType = `${number}${number}${'d' | 'n'}`;
+
+/**
  * Interface for current weather data.
  */
 export interface CurrentWeatherData {
@@ -10,7 +15,7 @@ export interface CurrentWeatherData {
     id: number;
     main: string;
     description: string;
-    icon: string;
+    icon: WeatherIconType;
   }[];
   base: string;
   main: {
@@ -63,7 +68,7 @@ export interface ForecastData {
     id: number;
     main: string;
     description: string;
-    icon: string;
+    icon: WeatherIconType;
   }>;
   clouds: {
     all: number;
