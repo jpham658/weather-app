@@ -15,14 +15,14 @@ async function getLocationData(city: string, country?: string) {
 
 async function getCurrentWeatherData(lat: number, lon: number) {
   const url = `${process.env.LOCAL_URL}/api/weather/current?lat=${lat}&lon=${lon}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { revalidate: 10800 } });
   const data = await res.json();
   return data;
 }
 
 async function getForecastData(lat: number, lon: number) {
   const url = `${process.env.LOCAL_URL}/api/weather/forecast?lat=${lat}&lon=${lon}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { revalidate: 10800 } });
   const data = await res.json();
   return data;
 }

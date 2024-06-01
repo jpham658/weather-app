@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const key = process.env.OPEN_WEATHER_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
     try {
-        const res = await fetch(url, { cache: 'no-store' });
+        const res = await fetch(url, { next: { revalidate: 10800 } });
         if (!res.ok) {
           const errorData = await res.json();
           return new NextResponse(JSON.stringify({ error: errorData }), {
