@@ -79,11 +79,11 @@ export function getWeatherType(iconText: WeatherIconType) : string {
 export function getWeatherTypeBackground(weather: WeatherIconType) {
     const day = isDay(weather);
     const colours: Record<string, string> = {
-        "clear": day ? "bg-gradient-to-b from-sky-200 to-cyan-100" : "bg-gradient-to-b from-indigo-500 to-blue-200",
-        "sunny-intervals": day ? "bg-gradient-to-b from-slate-300 to-sky-100" : "bg-gradient-to-b from-slate-500 to-indigo-200",
-        "clouds": day ? "bg-gradient-to-b from-slate-300 to-sky-50" : "bg-gradient-to-b from-slate-500 to-indigo-300",
-        "rain": day ? "bg-gradient-to-b from-slate-400 to-slate-200" : "bg-gradient-to-b from-slate-600 to-slate-400",
-        "thunderstorm": day ? "bg-gradient-to-b from-slate-600 to-blue-100" : "bg-gradient-to-b from-slate-600 to-indigo-900",
+        "clear": day ? "bg-gradient-to-b from-sky-200 to-cyan-100" : "bg-gradient-to-b from-indigo-500 to-blue-400",
+        "sunny-intervals": day ? "bg-gradient-to-b from-slate-300 to-sky-100" : "bg-gradient-to-b from-slate-500 to-indigo-300",
+        "clouds": day ? "bg-gradient-to-b from-slate-400 to-sky-100" : "bg-gradient-to-b from-slate-500 to-indigo-300",
+        "rain": day ? "bg-gradient-to-b from-slate-400 to-slate-200" : "bg-gradient-to-b from-slate-500 to-slate-400",
+        "thunderstorm": day ? "bg-gradient-to-b from-slate-500 to-blue-100" : "bg-gradient-to-b from-slate-600 to-indigo-900",
     }
 
     return colours[getWeatherType(weather)] || colours["clouds"];
